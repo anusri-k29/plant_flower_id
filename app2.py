@@ -1,4 +1,4 @@
-# app2.py - fixed backend for plant identifier
+# app2.py - Hugging Face ready backend for plant identifier
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
@@ -7,9 +7,9 @@ from tensorflow.keras.applications.efficientnet_v2 import preprocess_input
 from PIL import Image
 import io, os, json
 
-MODEL_PATH = "best_model.keras"
+MODEL_PATH = "plant_id.keras"  # rename your model file before pushing
 CLASS_NAMES_PATH = "class_names.json"
-PLANTS_DATA_PATH = "plants_data.json"  # optional file with extra plant info
+PLANTS_DATA_PATH = "plants_data.json"
 
 app = Flask(__name__, static_folder=None)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -89,4 +89,5 @@ def get_plant_info(name):
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    PORT = int(os.environ.get("PORT", 7860))
+    app.run(host='0.0.0.0', port=PORT, debug=False)
